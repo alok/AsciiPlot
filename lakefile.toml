@@ -1,0 +1,10 @@
+name = "AsciiPlot"
+version = "0.1.0"
+defaultTargets = ["asciiplot"]
+
+[[lean_lib]]
+name = "AsciiPlot"
+
+[[lean_exe]]
+name = "asciiplot"
+root = "Main"
