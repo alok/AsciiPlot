@@ -23,7 +23,7 @@ structure Series where
   /-- Label for the series in the legend -/
   label : String
   /-- The points to plot as `(x, y)` pairs -/
-  points : Array (Float × Float)
+  points : Array (Float × Float) -- TODO: plotting functions could take in 2 arrays of floats instead of an array of pairs.
   /-- The character used to plot this series -/
   marker : Char := '•'
 deriving Inhabited
@@ -42,6 +42,7 @@ structure AxisConfig where
   showTickValues : Bool := true
 deriving Inhabited
 
+/-- The main plot structure -/
 structure AsciiPlot where
   /-- The title of the plot -/
   title : String
@@ -212,21 +213,23 @@ section Examples
 open AsciiPlot
 
 /-- Plot multiple trigonometric functions with axis labels -/
-def trigPlot : AsciiPlot := {
+def trigPlot : AsciiPlot :=
+  let sinPoints := Array.range 100 |>.map fun x =>
+    let x := x.toFloat / 10
+    (x, Float.sin x)
+  let cosPoints := Array.range 100 |>.map fun x =>
+    let x := x.toFloat / 10
+    (x, Float.cos x)
+  {
   title := "Trigonometric Functions",
   series := #[
     { label := "sin(x)",
-      points := Array.range 100 |>.map fun x =>
-        let x := x.toFloat / 10
-        (x, Float.sin x),
+      points := sinPoints,
       marker := '●' },
     { label := "cos(x)",
-      points := Array.range 100 |>.map fun x =>
-        let x := x.toFloat / 10
-        (x, Float.cos x),
+      points := cosPoints,
       marker := '○' }
   ],
-  width := 60,
   height := 20,
   axisConfig := {
     xLabel := "x",
